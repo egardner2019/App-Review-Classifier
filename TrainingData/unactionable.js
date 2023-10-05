@@ -1000,3 +1000,5 @@ const unactionableReviews = [
   "This app's recipe recommendations have made me a better cook.",
   "The augmented reality features in this app make learning engaging.",
 ];
+
+export default unactionableReviews;
