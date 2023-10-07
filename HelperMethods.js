@@ -1,3 +1,11 @@
+import realActionableReviews from "./RealData/RealActionable";
+import realUnactionableReviews from "./RealData/RealUnactionable";
+
+/**
+ * Splits the given review into an array of words
+ * @param {string} review The review to be split up into words
+ * @returns An array of the words in the review sentence
+ */
 const splitReviewIntoWords = (review) => {
   // Split each review sentence by spaces
   let reviewWords = review.split(" ");
@@ -11,9 +19,17 @@ const splitReviewIntoWords = (review) => {
       .replace("?", "");
   });
 
+  // Return the array of formatted words in the review
   return reviewWords;
 };
 
+/**
+ * Iterates through the reviews in the given array and counts the number of occurrences of each unique word in the reviews based on their categorization (actionable/unactionable).
+ * @param {{} | {word: {actionable: number, unactionable: number}}} uniqueWordsInTrainingData An object containing an unknown number of objects (one for each unique word). The keys of the subobjects are these words. The subobjects contain the number of occurrences of the word in actionable and unactionable reviews.
+ * @param {string[]} reviewArray An array containing the review sentences
+ * @param {boolean} isActionable Whether the review array contains reviews that are actionable (true) or unactionable (false)
+ * @returns The uniqueWordsInTrainingData object with the actionable/unactionable occurrences updated according to the given reviewArray
+ */
 const iterateThroughReviews = (
   uniqueWordsInTrainingData,
   reviewArray,
@@ -44,6 +60,14 @@ const iterateThroughReviews = (
   return uniqueWordsInTrainingData;
 };
 
+/**
+ * Calculates the probability that a real review is actionable
+ * @param {string} review The review for which the probability should be calculated
+ * @param {{word: {probGivenActionable: number, probGivenUnactionable: number}}} probWordsInTraining An object containing an unknown number of objects (one for each unique word). The keys of the subobjects are these words. The subobjects contain the probabilities that word appears in a review given that it is actionable or unactionable.
+ * @param {number} probActionable The probability that any review is actionable
+ * @param {number} probUnactionable The probability that any review is unactionable
+ * @returns The probability that the given review is actionable
+ */
 const calculateProbActionableOfRealReview = (
   review,
   probWordsInTraining,
@@ -73,27 +97,47 @@ const calculateProbActionableOfRealReview = (
   });
 
   // Compute the overall probability of the real review being actionable and return that value
-  return (probReviewActionable =
+  return (
     (probActionable * productProbWordGivenActionable) /
     (probActionable * productProbWordGivenActionable +
-      probUnactionable * productProbWordGivenUnactionable));
-};
-
-const filterIncorrectlyLabelledReviews = (
-  realReviewsProbArray,
-  shouldBeActionable
-) => {
-  // Filter out the correctly labelled reviews
-  return realReviewsProbArray.filter(
-    (probability) =>
-      (probability > 0.5 && shouldBeActionable) ||
-      (probability <= 0.5 && !shouldBeActionable)
+      probUnactionable * productProbWordGivenUnactionable)
   );
 };
 
-const getTotalByLabel = (allLabelledReviews, isActionable) => {
-  return allLabelledReviews.filter((probability) =>
-    isActionable ? probability > 0.5 : probability <= 0.5
+/**
+ * Creates an array of the incorrectly labelled reviews
+ * @param {number[]} realReviewsProbArray The array of probabilities corresponding to the reviews
+ * @param {boolean} isForRealActionableReviews Whether this array contains the probabilities for the realActionableReviews array (true) or the realUnactionableReviews array (false)
+ * @returns An array containing the incorrectly labelled reviews
+ */
+const filterIncorrectlyLabelledReviews = (
+  realReviewsProbArray,
+  isForRealActionableReviews
+) => {
+  let incorrectlyLabelledReviews = [];
+  realReviewsProbArray.forEach((probability, index) => {
+    if (
+      (probability > 0.5 && isForRealActionableReviews) ||
+      (probability <= 0.5 && !isForRealActionableReviews)
+    )
+      incorrectlyLabelledReviews.push(
+        isForRealActionableReviews
+          ? realActionableReviews[index]
+          : realUnactionableReviews[index]
+      );
+  });
+  return incorrectlyLabelledReviews;
+};
+
+/**
+ * Gather the number of real reviews labelled with the given category (actionable/unactionable)
+ * @param {number[]} allLabelledReviewsProbabilities An array containing the probabilities that each review is actionable. This array should contain all of the real reviews (both actionable and unactionable).
+ * @param {boolean} getActionable Whether to get the number of actionable (true) or unactionable (false) reviews
+ * @returns The number of real reviews that are considered actionable (if getActionable is true) or unactionable (if getActionable is false)
+ */
+const getTotalByLabel = (allLabelledReviewsProbabilities, getActionable) => {
+  return allLabelledReviewsProbabilities.filter((probability) =>
+    getActionable ? probability > 0.5 : probability <= 0.5
   ).length;
 };
 
