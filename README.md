@@ -1,4 +1,4 @@
-# NaiveBayes
+# Naive Bayes Implementation for App Review Classification
 This is a Naive Bayes implementation for classifying app reviews as actionable or unactionable.
 
 The training data was generated with ChatGPT. The real data was manually gathered from the Google Play Store, Apple App Store, and Microsoft Store.
