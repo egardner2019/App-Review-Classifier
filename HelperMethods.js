@@ -14,17 +14,17 @@ const splitReviewIntoWords = (review) => {
   reviewWords.forEach((word, index) => {
     reviewWords[index] = word
       .toLowerCase()
-      .replace(".", "")
-      .replace(",", "")
-      .replace("?", "")
-      .replace("(", "")
-      .replace(")", "")
-      .replace("!", "")
-      .replace(":", "")
-      .replace("&", "")
-      .replace("-", "")
-      .replace("'", "")
-      .replace(";", "");
+      .replaceAll(".", "")
+      .replaceAll(",", "")
+      .replaceAll("?", "")
+      .replaceAll("(", "")
+      .replaceAll(")", "")
+      .replaceAll("!", "")
+      .replaceAll(":", "")
+      .replaceAll("&", "")
+      .replaceAll("-", "")
+      .replaceAll("'", "")
+      .replaceAll(";", "");
   });
 
   // Remove any empty strings that occur after removing punctuation
@@ -108,11 +108,11 @@ const calculateProbActionableOfRealReview = (
   });
 
   // Compute the overall probability of the real review being actionable and return that value
-  return (
+  const overallProb =
     (probActionable * productProbWordGivenActionable) /
     (probActionable * productProbWordGivenActionable +
-      probUnactionable * productProbWordGivenUnactionable)
-  );
+      probUnactionable * productProbWordGivenUnactionable);
+  return overallProb;
 };
 
 /**
@@ -128,8 +128,8 @@ const filterIncorrectlyLabelledReviews = (
   let incorrectlyLabelledReviews = [];
   realReviewsProbArray.forEach((probability, index) => {
     if (
-      (probability > 0.5 && isForRealActionableReviews) ||
-      (probability <= 0.5 && !isForRealActionableReviews)
+      (probability <= 0.5 && isForRealActionableReviews) ||
+      (probability > 0.5 && !isForRealActionableReviews)
     )
       incorrectlyLabelledReviews.push(
         isForRealActionableReviews
@@ -137,6 +137,8 @@ const filterIncorrectlyLabelledReviews = (
           : realUnactionableReviews[index]
       );
   });
+
+  console.log(incorrectlyLabelledReviews)
   return incorrectlyLabelledReviews;
 };
 

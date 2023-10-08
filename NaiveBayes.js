@@ -65,6 +65,7 @@ const naiveBayes = () => {
       probUnactionable
     );
   });
+
   let unactionableProbabilities = [];
   realUnactionableReviews.forEach((review, index) => {
     unactionableProbabilities[index] = calculateProbActionableOfRealReview(
@@ -99,7 +100,9 @@ const naiveBayes = () => {
 
   // Calculate the overall accuracy of the Naive Bayes implementation
   const overallAccuracy =
-    allIncorrectlyLabelledReviews / allLabelledReviewsProbabilities.length;
+    1 -
+    allIncorrectlyLabelledReviews.length /
+      allLabelledReviewsProbabilities.length;
 
   // Calculate the total number of reviews labelled as actionable
   const totalLabelledActionable = getTotalByLabel(
@@ -114,7 +117,7 @@ const naiveBayes = () => {
   );
 
   // Print the results to the console
-  console.log("Overall Accuracy: " + overallAccuracy);
+  console.log(`Overall Accuracy: ${overallAccuracy * 100}%`);
   console.log(
     "Number of reviews labelled as actionable: " + totalLabelledActionable
   );
