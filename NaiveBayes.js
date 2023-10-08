@@ -6,7 +6,7 @@ import realActionableReviews from "./RealData/RealActionable.js";
 import realUnactionableReviews from "./RealData/RealUnactionable.js";
 import {
   calculateProbActionableOfRealReview,
-  filterIncorrectlyLabelledReviews,
+  filterIncorrectlyLabeledReviews,
   getTotalByLabel,
   iterateThroughReviews,
 } from "./HelperMethods.js";
@@ -77,62 +77,62 @@ const naiveBayes = () => {
   });
 
   // Step 6: Calculate the results
-  // Determine which actionable reviews were incorrectly labelled as unactionable
-  const actionableIncorrectlyLabelled = filterIncorrectlyLabelledReviews(
+  // Determine which actionable reviews were incorrectly labeled as unactionable
+  const actionableIncorrectlyLabeled = filterIncorrectlyLabeledReviews(
     actionableProbabilities,
     true
   );
-  // Determine which unactionable reviews were incorrectly labelled as actionable
-  const unactionableIncorrectlyLabelled = filterIncorrectlyLabelledReviews(
+  // Determine which unactionable reviews were incorrectly labeled as actionable
+  const unactionableIncorrectlyLabeled = filterIncorrectlyLabeledReviews(
     unactionableProbabilities,
     true
   );
 
-  // Gather all of the incorrectly labelled reviews
-  const allIncorrectlyLabelledReviews = actionableIncorrectlyLabelled.concat(
-    unactionableIncorrectlyLabelled
+  // Gather all of the incorrectly labeled reviews
+  const allIncorrectlyLabeledReviews = actionableIncorrectlyLabeled.concat(
+    unactionableIncorrectlyLabeled
   );
 
-  // Gather all of the labelled reviews
-  const allLabelledReviewsProbabilities = actionableProbabilities.concat(
+  // Gather all of the labeled reviews
+  const allLabeledReviewsProbabilities = actionableProbabilities.concat(
     unactionableProbabilities
   );
 
   // Calculate the overall accuracy of the Naive Bayes implementation
   const overallAccuracy =
     1 -
-    allIncorrectlyLabelledReviews.length /
-      allLabelledReviewsProbabilities.length;
+    allIncorrectlyLabeledReviews.length /
+      allLabeledReviewsProbabilities.length;
 
-  // Calculate the total number of reviews labelled as actionable
-  const totalLabelledActionable = getTotalByLabel(
-    allLabelledReviewsProbabilities,
+  // Calculate the total number of reviews labeled as actionable
+  const totalLabeledActionable = getTotalByLabel(
+    allLabeledReviewsProbabilities,
     true
   );
 
-  // Calculate the total number of reviews labelled as unactionable
-  const totalLabelledUnactionable = getTotalByLabel(
-    allLabelledReviewsProbabilities,
+  // Calculate the total number of reviews labeled as unactionable
+  const totalLabeledUnactionable = getTotalByLabel(
+    allLabeledReviewsProbabilities,
     false
   );
 
   // Print the results to the console
   console.log(`Overall Accuracy: ${overallAccuracy * 100}%`);
   console.log(
-    "Number of reviews labelled as actionable: " + totalLabelledActionable
+    "Number of reviews labeled as actionable: " + totalLabeledActionable
   );
   console.log(
-    "Number of reviews labelled as unactionable: " + totalLabelledUnactionable
+    "Number of reviews labeled as unactionable: " + totalLabeledUnactionable
   );
   console.log(
-    `The following ${actionableIncorrectlyLabelled.length} reviews are actionable but were labelled incorrectly as unactionable: `
+    `The following ${actionableIncorrectlyLabeled.length} reviews are actionable but were labeled incorrectly as unactionable: `
   );
-  actionableIncorrectlyLabelled.forEach((review) => console.log(review));
+  actionableIncorrectlyLabeled.forEach((review) => console.log(`- ${review}`));
 
   console.log(
-    `The following ${unactionableIncorrectlyLabelled.length} reviews are unactionable but were labelled incorrectly as actionable:`
+    `The following ${unactionableIncorrectlyLabeled.length} reviews are unactionable but were labeled incorrectly as actionable:`
   );
-  unactionableIncorrectlyLabelled.forEach((review) => console.log(review));
+  unactionableIncorrectlyLabeled.forEach((review) => console.log(`- ${review}`));
 };
 
 // Run the program
