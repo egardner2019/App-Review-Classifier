@@ -1,4 +1,4 @@
-const actionableReviews = [
+const trainingActionableReviews = [
   "Please add a dark mode for nighttime use.",
   "Can you include a currency converter for travelers?",
   "Add a barcode scanner for price comparisons.",
@@ -1001,4 +1001,4 @@ const actionableReviews = [
   "I want a currency exchange rate widget with currency converter widgets.",
 ];
 
-export default actionableReviews;
+export default trainingActionableReviews;

@@ -1,4 +1,4 @@
-const unactionableReviews = [
+const trainingUnactionableReviews = [
   "This app is a lifesaver for tracking expenses.",
   "I love how intuitive the user interface is.",
   "The design of this app is sleek and modern.",
@@ -1001,4 +1001,4 @@ const unactionableReviews = [
   "The augmented reality features in this app make learning engaging.",
 ];
 
-export default unactionableReviews;
+export default trainingUnactionableReviews;

@@ -1,5 +1,5 @@
-import realActionableReviews from "./RealData/RealActionable";
-import realUnactionableReviews from "./RealData/RealUnactionable";
+import realActionableReviews from "./RealData/RealActionable.js";
+import realUnactionableReviews from "./RealData/RealUnactionable.js";
 
 /**
  * Splits the given review into an array of words
@@ -16,8 +16,19 @@ const splitReviewIntoWords = (review) => {
       .toLowerCase()
       .replace(".", "")
       .replace(",", "")
-      .replace("?", "");
+      .replace("?", "")
+      .replace("(", "")
+      .replace(")", "")
+      .replace("!", "")
+      .replace(":", "")
+      .replace("&", "")
+      .replace("-", "")
+      .replace("'", "")
+      .replace(";", "");
   });
+
+  // Remove any empty strings that occur after removing punctuation
+  reviewWords.filter((word) => word.length > 0);
 
   // Return the array of formatted words in the review
   return reviewWords;

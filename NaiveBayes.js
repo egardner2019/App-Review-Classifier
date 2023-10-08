@@ -1,17 +1,17 @@
 // To run the program, run "node NaiveBayes.js" within this project in the terminal
 
-import trainingActionableReviews from "./TrainingData/TrainingActionable";
-import trainingUnactionableReviews from "./TrainingData/TrainingUnactionable";
-import realActionableReviews from "./RealData/RealActionable";
-import realUnactionableReviews from "./RealData/RealUnactionable";
+import trainingActionableReviews from "./TrainingData/TrainingActionable.js";
+import trainingUnactionableReviews from "./TrainingData/TrainingUnactionable.js";
+import realActionableReviews from "./RealData/RealActionable.js";
+import realUnactionableReviews from "./RealData/RealUnactionable.js";
 import {
   calculateProbActionableOfRealReview,
   filterIncorrectlyLabelledReviews,
   getTotalByLabel,
   iterateThroughReviews,
-} from "./HelperMethods";
+} from "./HelperMethods.js";
 
-const NaiveBayes = () => {
+const naiveBayes = () => {
   // Preliminary work for steps 1 and 2
   // An object to keep track of the number of occurrences of each word in the training reviews
   let uniqueWordsInTrainingData = {};
@@ -133,4 +133,4 @@ const NaiveBayes = () => {
 };
 
 // Run the program
-NaiveBayes();
+naiveBayes();
