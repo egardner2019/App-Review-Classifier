@@ -85,7 +85,7 @@ const naiveBayes = () => {
   // Determine which unactionable reviews were incorrectly labeled as actionable
   const unactionableIncorrectlyLabeled = filterIncorrectlyLabeledReviews(
     unactionableProbabilities,
-    true
+    false
   );
 
   // Gather all of the incorrectly labeled reviews
@@ -101,8 +101,7 @@ const naiveBayes = () => {
   // Calculate the overall accuracy of the Naive Bayes implementation
   const overallAccuracy =
     1 -
-    allIncorrectlyLabeledReviews.length /
-      allLabeledReviewsProbabilities.length;
+    allIncorrectlyLabeledReviews.length / allLabeledReviewsProbabilities.length;
 
   // Calculate the total number of reviews labeled as actionable
   const totalLabeledActionable = getTotalByLabel(
@@ -132,7 +131,9 @@ const naiveBayes = () => {
   console.log(
     `The following ${unactionableIncorrectlyLabeled.length} reviews are unactionable but were labeled incorrectly as actionable:`
   );
-  unactionableIncorrectlyLabeled.forEach((review) => console.log(`- ${review}`));
+  unactionableIncorrectlyLabeled.forEach((review) =>
+    console.log(`- ${review}`)
+  );
 };
 
 // Run the program

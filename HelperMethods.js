@@ -92,7 +92,7 @@ const calculateProbActionableOfRealReview = (
 
   // Iterate through the words in the review
   reviewWords.forEach((word) => {
-    // If the word exists in the training data, add those probabilities to probRealReviewsWords
+    // If the word exists in the training data, add that probability to probRealReviewsWords
     if (word in probWordsInTraining)
       probRealReviewsWords[word] = probWordsInTraining[word];
   });
