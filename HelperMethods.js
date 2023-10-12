@@ -1,5 +1,4 @@
-import realActionableReviews from "./RealData/RealActionable.js";
-import realUnactionableReviews from "./RealData/RealUnactionable.js";
+import * as fs from "fs";
 
 /**
  * Splits the given review into an array of words
@@ -116,46 +115,32 @@ const calculateProbActionableOfRealReview = (
 };
 
 /**
- * Creates an array of the incorrectly labeled reviews
- * @param {number[]} realReviewsProbArray The array of probabilities corresponding to the reviews
- * @param {boolean} isForRealActionableReviews Whether this array contains the probabilities for the realActionableReviews array (true) or the realUnactionableReviews array (false)
- * @returns An array containing the incorrectly labeled reviews
+ * Write the results of running the classifier to the files in the Results folder.
+ * @param {string[]} data An array containing the textual reviews to add to the file
+ * @param {"AllActionable" | "AllUnactionable" | "ActionableLabeledIncorrectly" | "UnactionableLabeledIncorrectly"} fileName The file that will be written
  */
-const filterIncorrectlyLabeledReviews = (
-  realReviewsProbArray,
-  isForRealActionableReviews
-) => {
-  let incorrectlyLabeledReviews = [];
-  realReviewsProbArray.forEach((probability, index) => {
-    if (
-      (probability <= 0.5 && isForRealActionableReviews) ||
-      (probability > 0.5 && !isForRealActionableReviews)
-    )
-      incorrectlyLabeledReviews.push(
-        isForRealActionableReviews
-          ? realActionableReviews[index]
-          : realUnactionableReviews[index]
+const writeResultsToFile = (data, fileName) => {
+  if (data.length > 0) {
+    const writeStream = fs.createWriteStream(`Results/${fileName}.txt`);
+
+    data.forEach((review) => writeStream.write(`${review}\n`));
+
+    writeStream.on("finish", () => {
+      console.log(`Wrote ${data.length} reviews to ${fileName}.txt.`);
+    });
+
+    writeStream.on("error", (error) => {
+      console.error(
+        `Unable to write data to ${fileName}.txt. Error: ${error.message}`
       );
-  });
+    });
 
-  return incorrectlyLabeledReviews;
-};
-
-/**
- * Gather the number of real reviews labeled with the given category (actionable/unactionable)
- * @param {number[]} allLabeledReviewsProbabilities An array containing the probabilities that each review is actionable. This array should contain all of the real reviews (both actionable and unactionable).
- * @param {boolean} getActionable Whether to get the number of actionable (true) or unactionable (false) reviews
- * @returns The number of real reviews that are considered actionable (if getActionable is true) or unactionable (if getActionable is false)
- */
-const getTotalByLabel = (allLabeledReviewsProbabilities, getActionable) => {
-  return allLabeledReviewsProbabilities.filter((probability) =>
-    getActionable ? probability > 0.5 : probability <= 0.5
-  ).length;
+    writeStream.end();
+  } else console.log(`There is no data to be written to ${fileName}.txt.`);
 };
 
 export {
   iterateThroughReviews,
   calculateProbActionableOfRealReview,
-  filterIncorrectlyLabeledReviews,
-  getTotalByLabel,
+  writeResultsToFile,
 };

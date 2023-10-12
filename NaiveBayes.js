@@ -1,14 +1,12 @@
 // To run the program, run "node NaiveBayes.js" within this project in the terminal
-
 import trainingActionableReviews from "./TrainingData/TrainingActionable.js";
 import trainingUnactionableReviews from "./TrainingData/TrainingUnactionable.js";
 import realActionableReviews from "./RealData/RealActionable.js";
 import realUnactionableReviews from "./RealData/RealUnactionable.js";
 import {
   calculateProbActionableOfRealReview,
-  filterIncorrectlyLabeledReviews,
-  getTotalByLabel,
   iterateThroughReviews,
+  writeResultsToFile,
 } from "./HelperMethods.js";
 
 const naiveBayes = () => {
@@ -77,62 +75,73 @@ const naiveBayes = () => {
   });
 
   // Step 6: Calculate the results
-  // Determine which actionable reviews were incorrectly labeled as unactionable
-  const actionableIncorrectlyLabeled = filterIncorrectlyLabeledReviews(
-    actionableProbabilities,
-    true
-  );
-  // Determine which unactionable reviews were incorrectly labeled as actionable
-  const unactionableIncorrectlyLabeled = filterIncorrectlyLabeledReviews(
-    unactionableProbabilities,
-    false
-  );
+  let actionableLabeledCorrectly = [];
+  let actionableLabeledIncorrectly = [];
+  let unactionableLabeledCorrectly = [];
+  let unactionableLabeledIncorrectly = [];
 
-  // Gather all of the incorrectly labeled reviews
-  const allIncorrectlyLabeledReviews = actionableIncorrectlyLabeled.concat(
-    unactionableIncorrectlyLabeled
-  );
+  // Go through the probabilities of the actionable reviews and classify them
+  actionableProbabilities.forEach((probability, index) => {
+    if (probability > 0.5)
+      actionableLabeledCorrectly.push(realActionableReviews[index]);
+    else actionableLabeledIncorrectly.push(realActionableReviews[index]);
+  });
 
-  // Gather all of the labeled reviews
-  const allLabeledReviewsProbabilities = actionableProbabilities.concat(
-    unactionableProbabilities
-  );
+  // Go through the probabilities of the unactionable reviews and classify them
+  unactionableProbabilities.forEach((probability, index) => {
+    if (probability <= 0.5)
+      unactionableLabeledCorrectly.push(realUnactionableReviews[index]);
+    else unactionableLabeledIncorrectly.push(realUnactionableReviews[index]);
+  });
+
+  // Get the total number of incorrectly labeled reviews
+  const numberOfIncorrectlyLabeledReviews =
+    actionableLabeledIncorrectly.length + unactionableLabeledIncorrectly.length;
+
+  // Get the total number of real reviews
+  const numberOfRealReviews =
+    actionableProbabilities.length + unactionableProbabilities.length;
 
   // Calculate the overall accuracy of the Naive Bayes implementation
   const overallAccuracy =
-    1 -
-    allIncorrectlyLabeledReviews.length / allLabeledReviewsProbabilities.length;
+    1 - numberOfIncorrectlyLabeledReviews / numberOfRealReviews;
 
-  // Calculate the total number of reviews labeled as actionable
-  const totalLabeledActionable = getTotalByLabel(
-    allLabeledReviewsProbabilities,
-    true
+  // Step 7: Add classified reviews to the associated files within the Results folder
+  // Print all of the reviews that were labeled as actionable
+  const allReviewsLabeledActionable = actionableLabeledCorrectly.concat(
+    unactionableLabeledIncorrectly
+  );
+  writeResultsToFile(allReviewsLabeledActionable, "AllActionable");
+
+  // Print all of the reviews that were labeled as unactionable
+  const allReviewsLabeledUnactionable = unactionableLabeledCorrectly.concat(
+    actionableLabeledIncorrectly
+  );
+  writeResultsToFile(allReviewsLabeledUnactionable, "AllUnactionable");
+
+  // Print the reviews that are actually actionable but were incorrectly labeled as unactionable
+  writeResultsToFile(
+    actionableLabeledIncorrectly,
+    "ActionableLabeledIncorrectly"
   );
 
-  // Calculate the total number of reviews labeled as unactionable
-  const totalLabeledUnactionable = getTotalByLabel(
-    allLabeledReviewsProbabilities,
-    false
+  // Print the reviews that are actually unactionable but were incorrectly labeled as actionable
+  writeResultsToFile(
+    unactionableLabeledIncorrectly,
+    "UnactionableLabeledIncorrectly"
   );
 
-  // Print the results to the console
+  // Step 8: Print the results to the console
   console.log(`Overall Accuracy: ${overallAccuracy * 100}%`);
-  console.log(
-    "Number of reviews labeled as actionable: " + totalLabeledActionable
-  );
-  console.log(
-    "Number of reviews labeled as unactionable: " + totalLabeledUnactionable
-  );
-  console.log(
-    `The following ${actionableIncorrectlyLabeled.length} reviews are actionable but were labeled incorrectly as unactionable: `
-  );
-  actionableIncorrectlyLabeled.forEach((review) => console.log(`- ${review}`));
 
   console.log(
-    `The following ${unactionableIncorrectlyLabeled.length} reviews are unactionable but were labeled incorrectly as actionable:`
+    "Number of reviews labeled as actionable: " +
+      allReviewsLabeledActionable.length
   );
-  unactionableIncorrectlyLabeled.forEach((review) =>
-    console.log(`- ${review}`)
+
+  console.log(
+    "Number of reviews labeled as unactionable: " +
+      allReviewsLabeledUnactionable.length
   );
 };
 
