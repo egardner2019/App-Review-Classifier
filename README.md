@@ -3,7 +3,7 @@ This is a project to classify reviews in app stores. App reviews are classified 
 - App (entire app, crash reports, rating, general feedback, notifications)
 - GUI
 - Contents
-- Pricing (in-app purchases, subscriptions, cost of app)
+- Pricing (in-app purchases, subscriptions, cost of app, advertisements)
 - Feature/functionality (specific features/functionality)
 - Improvement (explicit enhancement requests)
 - Updates/versions (specific versions or update process)
