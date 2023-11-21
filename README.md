@@ -21,6 +21,6 @@ Four evaluation methods were used to classify app reviews as actionable/unaction
 
 I manually implemented the Naive Bayes classifier using the steps described in <a href="https://courses.cs.washington.edu/courses/cse312/18sp/lectures/naive-bayes/naivebayesnotes.pdf">this research paper</a>. The other three methods use the <a href="https://www.npmjs.com/package/brain.js">brain.js npm package</a>.
 
-To categorize reviews, I used the <a href="https://www.npmjs.com/package/cfc-classifier">cfc-classifier npm package</a>, which categorizes text based on the appraoch described in <a href="https://dl.acm.org/doi/abs/10.1145/1526709.1526737">this article</a>.
+To categorize reviews, I used the <a href="https://www.npmjs.com/package/cfc-classifier">cfc-classifier npm package</a>, which categorizes text based on the approach described in <a href="https://dl.acm.org/doi/abs/10.1145/1526709.1526737">this article</a>.
 
 The training data was generated with ChatGPT. The real data was manually gathered from the Google Play Store, Apple App Store, and Microsoft Store.
