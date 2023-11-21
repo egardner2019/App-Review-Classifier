@@ -5,7 +5,7 @@
   "description": "Naive Bayes implementation for app review classification",
   "main": "NaiveBayes.js",
   "scripts": {
-    "test": "Main()"
+    "test": "node Main.js"
   },
   "repository": {
     "type": "git",
