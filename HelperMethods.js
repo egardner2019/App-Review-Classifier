@@ -118,25 +118,26 @@ const calculateProbActionableOfRealReview = (
  * Write the results of running the classifier to the files in the Results folder.
  * @param {string[]} data An array containing the textual reviews to add to the file
  * @param {"AllActionable" | "AllUnactionable" | "ActionableLabeledIncorrectly" | "UnactionableLabeledIncorrectly"} fileName The file that will be written
+ * @param {"NaiveBayes" | "FNN" | "RNN" | "LSTM"} classifier The classifier that produced the results
  */
-const writeResultsToFile = (data, fileName) => {
+const writeResultsToFile = (data, fileName, classifier) => {
   if (data.length > 0) {
-    const writeStream = fs.createWriteStream(`Results/${fileName}.txt`);
+    const writeStream = fs.createWriteStream(`Results/${classifier}/${fileName}.txt`);
 
     data.forEach((review) => writeStream.write(`${review}\n`));
 
     writeStream.on("finish", () => {
-      console.log(`Wrote ${data.length} reviews to ${fileName}.txt.`);
+      console.log(`Wrote ${data.length} reviews to Results/${classifier}/${fileName}.txt`);
     });
 
     writeStream.on("error", (error) => {
       console.error(
-        `Unable to write data to ${fileName}.txt. Error: ${error.message}`
+        `Unable to write data to Results/${classifier}/${fileName}.txt. Error: ${error.message}`
       );
     });
 
     writeStream.end();
-  } else console.log(`There is no data to be written to ${fileName}.txt.`);
+  } else console.log(`There is no data to be written to Results/${classifier}/${fileName}.txt`);
 };
 
 export {

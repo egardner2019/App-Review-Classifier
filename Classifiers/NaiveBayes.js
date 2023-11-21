@@ -1,15 +1,15 @@
 // To run the program, run "node NaiveBayes.js" within this project in the terminal
-import trainingActionableReviews from "./TrainingData/TrainingActionable.js";
-import trainingUnactionableReviews from "./TrainingData/TrainingUnactionable.js";
-import realActionableReviews from "./RealData/RealActionable.js";
-import realUnactionableReviews from "./RealData/RealUnactionable.js";
+import trainingActionableReviews from "../TrainingData/TrainingActionable.js";
+import trainingUnactionableReviews from "../TrainingData/TrainingUnactionable.js";
+import realActionableReviews from "../RealData/RealActionable.js";
+import realUnactionableReviews from "../RealData/RealUnactionable.js";
 import {
   calculateProbActionableOfRealReview,
   iterateThroughReviews,
   writeResultsToFile,
-} from "./HelperMethods.js";
+} from "../HelperMethods.js";
 
-const naiveBayes = () => {
+const NaiveBayes = () => {
   // Preliminary work for steps 1 and 2
   // An object to keep track of the number of occurrences of each word in the training reviews
   let uniqueWordsInTrainingData = {};
@@ -111,24 +111,26 @@ const naiveBayes = () => {
   const allReviewsLabeledActionable = actionableLabeledCorrectly.concat(
     unactionableLabeledIncorrectly
   );
-  writeResultsToFile(allReviewsLabeledActionable, "AllActionable");
+  writeResultsToFile(allReviewsLabeledActionable, "AllActionable", "NaiveBayes");
 
   // Print all of the reviews that were labeled as unactionable
   const allReviewsLabeledUnactionable = unactionableLabeledCorrectly.concat(
     actionableLabeledIncorrectly
   );
-  writeResultsToFile(allReviewsLabeledUnactionable, "AllUnactionable");
+  writeResultsToFile(allReviewsLabeledUnactionable, "AllUnactionable", "NaiveBayes");
 
   // Print the reviews that are actually actionable but were incorrectly labeled as unactionable
   writeResultsToFile(
     actionableLabeledIncorrectly,
-    "ActionableLabeledIncorrectly"
+    "ActionableLabeledIncorrectly",
+    "NaiveBayes"
   );
 
   // Print the reviews that are actually unactionable but were incorrectly labeled as actionable
   writeResultsToFile(
     unactionableLabeledIncorrectly,
-    "UnactionableLabeledIncorrectly"
+    "UnactionableLabeledIncorrectly",
+    "NaiveBayes"
   );
 
   // Step 8: Print the results to the console
@@ -145,5 +147,4 @@ const naiveBayes = () => {
   );
 };
 
-// Run the program
-naiveBayes();
+export default NaiveBayes;
