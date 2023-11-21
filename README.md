@@ -1,6 +1,6 @@
 # App Review Classification
 This is a project to classify reviews in app stores. App reviews are classified as actionable/unactionable and put into the following categories (created by <a href="https://doi.org/10.1145/2950290.2950299">this research paper</a>).
-- App (entire app)
+- App (entire app, crash reports, rating, general feedback)
 - GUI
 - Contents
 - Pricing
