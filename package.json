@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/egardner2019/NaiveBayes/issues"
   },
-  "homepage": "https://github.com/egardner2019/NaiveBayes#readme"
+  "homepage": "https://github.com/egardner2019/NaiveBayes#readme",
+  "dependencies": {
+    "brain.js": "^1.6.1"
+  }
 }

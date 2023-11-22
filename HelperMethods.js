@@ -1,4 +1,6 @@
 import * as fs from "fs";
+import trainingActionableReviews from "./TrainingData/TrainingActionable.js";
+import trainingUnactionableReviews from "./TrainingData/TrainingUnactionable.js";
 
 /**
  * Splits the given review into an array of words
@@ -113,35 +115,178 @@ const calculateProbActionableOfRealReview = (
       probUnactionable * productProbWordGivenUnactionable);
   return overallProb;
 };
+/**
+ * Formats the training data to be used in FNN, RNN, LSTM
+ * @returns An array of the training reviews
+ */
+const formatBrainTrainingData = () => {
+  let formattedTrainingData = [];
+
+  trainingActionableReviews.forEach((review) =>
+    formattedTrainingData.push({ input: review, output: "actionable" })
+  );
+  trainingUnactionableReviews.forEach((review) =>
+    formattedTrainingData.push({ input: review, output: "unactionable" })
+  );
+
+  return formattedTrainingData;
+};
+
+/**
+ * Train the network and save the trained network to a JSON file
+ * @param {*} trainingData The formatted training data
+ * @param {*} neuralNetwork The neural network object from Brain.js
+ * @param {"FNN" | "RNN" | "LSTM"} neuralNetworkType
+ */
+const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
+  // The file to be written
+  const filePath = `TrainedNeuralNetworks/${neuralNetworkType}.json`;
+
+  // Train the neural network with the data
+  neuralNetwork.train(trainingData);
+
+  // Convert the trained neural network to JSON
+  const neuralNetworkJSON = neuralNetwork.toJSON();
+
+  // Create a stream to write to a JSON file
+  const writeStream = fs.createWriteStream(filePath);
+
+  // Write the neural network JSON to the file
+  writeStream.write(JSON.stringify(neuralNetworkJSON));
+
+  // Tell the user if the neural network was successfully written
+  writeStream.on("finish", () => {
+    console.log(`Wrote trained ${neuralNetworkType} to ${filePath}`);
+  });
+  writeStream.on("error", (error) => {
+    console.error(
+      `Unable to write trained ${neuralNetworkType} to ${filePath}. Error: ${error.message}`
+    );
+  });
+
+  writeStream.end();
+};
 
 /**
  * Write the results of running the classifier to the files in the Results folder.
- * @param {string[]} data An array containing the textual reviews to add to the file
- * @param {"AllActionable" | "AllUnactionable" | "ActionableLabeledIncorrectly" | "UnactionableLabeledIncorrectly"} fileName The file that will be written
+ * @param {string[]} correctActionable The reviews that were labeled actionable and really are actionable (true positive)
+ * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
+ * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)
+ * @param {string[]} incorrectUnactionable The reviews that were labeled actionable but are really unactionable (false positive)
  * @param {"NaiveBayes" | "FNN" | "RNN" | "LSTM"} classifier The classifier that produced the results
  */
-const writeResultsToFile = (data, fileName, classifier) => {
-  if (data.length > 0) {
-    const writeStream = fs.createWriteStream(`Results/${classifier}/${fileName}.txt`);
-
-    data.forEach((review) => writeStream.write(`${review}\n`));
-
-    writeStream.on("finish", () => {
-      console.log(`Wrote ${data.length} reviews to Results/${classifier}/${fileName}.txt`);
-    });
-
-    writeStream.on("error", (error) => {
-      console.error(
-        `Unable to write data to Results/${classifier}/${fileName}.txt. Error: ${error.message}`
+const writeResultsToFile = (
+  correctActionable,
+  correctUnactionable,
+  incorrectActionable,
+  incorrectUnactionable,
+  classifier
+) => {
+  // A sub-method to write to the file
+  const writeToFile = (data, fileName) => {
+    if (data.length > 0) {
+      const writeStream = fs.createWriteStream(
+        `Results/${classifier}/${fileName}.txt`
       );
-    });
 
-    writeStream.end();
-  } else console.log(`There is no data to be written to Results/${classifier}/${fileName}.txt`);
+      data.forEach((review) => writeStream.write(`${review}\n`));
+
+      writeStream.on("close", () => {
+        console.log(
+          `Wrote ${data.length} reviews to Results/${classifier}/${fileName}.txt`
+        );
+      });
+
+      writeStream.on("error", (error) => {
+        console.error(
+          `Unable to write data to Results/${classifier}/${fileName}.txt. Error: ${error.message}`
+        );
+      });
+
+      writeStream.end();
+    } else
+      console.log(
+        `There is no data to be written to Results/${classifier}/${fileName}.txt`
+      );
+  };
+
+  // Write the results to the associated files
+  writeToFile(correctActionable.concat(incorrectUnactionable), "AllActionable");
+  writeToFile(
+    correctUnactionable.concat(incorrectActionable),
+    "AllUnactionable"
+  );
+  writeToFile(incorrectActionable, "ActionableLabeledIncorrectly");
+  writeToFile(incorrectUnactionable, "UnactionableLabeledIncorrectly");
+};
+
+/**
+ * Get a previously trained neural network
+ * @param {"FNN" | "RNN" | "LSTM"} networkType
+ * @returns The JSON of the previously trained network if it exists. Null otherwise.
+ */
+const getTrainedNetwork = (networkType) => {
+  try {
+    const data = fs.readFileSync(`TrainedNeuralNetworks/${networkType}.json`);
+    console.log("found json data: ", data);
+    return JSON.parse(data);
+  } catch (err) {
+    console.log("Error in getting trained network:", err);
+    // If an error occurs (e.g. if the file doesn't exist), return null
+    return null;
+  }
+};
+
+/**
+ * Evaluate the classifier's run and print the results to the console
+ * @param {"Naive Bayes" | "LSTM" | "RNN" | "FNN"} classifierType The neural network type being evaluated
+ * @param {string[]} correctActionable The reviews that were labeled actionable and really are actionable (true positive)
+ * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
+ * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)
+ * @param {string[]} incorrectUnactionable The reviews that were labeled actionable but are really unactionable (false positive)
+ */
+const printEvaluationMetrics = (
+  classifierType,
+  correctActionable,
+  incorrectActionable,
+  correctUnactionable,
+  incorrectUnactionable
+) => {
+  const truePosCount = correctActionable.length;
+  const falseNegCount = incorrectActionable.length;
+  const trueNegCount = correctUnactionable.length;
+  const falsePosCount = incorrectUnactionable.length;
+
+  const formatNumber = (num) => {
+    return (num * 100).toFixed(2) + "%";
+  };
+
+  console.log(
+    `------------ Results of the ${classifierType} method ------------`
+  );
+  console.log(
+    "Accuracy:",
+    formatNumber(
+      (truePosCount + trueNegCount) /
+        (truePosCount + trueNegCount + falsePosCount + falseNegCount)
+    )
+  );
+  console.log(
+    "Precision:",
+    formatNumber(truePosCount / (truePosCount + falsePosCount))
+  );
+  console.log(
+    "Recall:",
+    formatNumber(truePosCount / (truePosCount + falseNegCount))
+  );
 };
 
 export {
   iterateThroughReviews,
   calculateProbActionableOfRealReview,
+  formatBrainTrainingData,
+  trainNeuralNetwork,
   writeResultsToFile,
+  getTrainedNetwork,
+  printEvaluationMetrics,
 };

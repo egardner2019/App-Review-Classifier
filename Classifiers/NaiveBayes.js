@@ -6,6 +6,7 @@ import realUnactionableReviews from "../RealData/RealUnactionable.js";
 import {
   calculateProbActionableOfRealReview,
   iterateThroughReviews,
+  printEvaluationMetrics,
   writeResultsToFile,
 } from "../HelperMethods.js";
 
@@ -94,56 +95,22 @@ const NaiveBayes = () => {
     else unactionableLabeledIncorrectly.push(realUnactionableReviews[index]);
   });
 
-  // Get the total number of incorrectly labeled reviews
-  const numberOfIncorrectlyLabeledReviews =
-    actionableLabeledIncorrectly.length + unactionableLabeledIncorrectly.length;
-
-  // Get the total number of real reviews
-  const numberOfRealReviews =
-    actionableProbabilities.length + unactionableProbabilities.length;
-
-  // Calculate the overall accuracy of the Naive Bayes implementation
-  const overallAccuracy =
-    1 - numberOfIncorrectlyLabeledReviews / numberOfRealReviews;
-
   // Step 7: Add classified reviews to the associated files within the Results folder
-  // Print all of the reviews that were labeled as actionable
-  const allReviewsLabeledActionable = actionableLabeledCorrectly.concat(
-    unactionableLabeledIncorrectly
-  );
-  writeResultsToFile(allReviewsLabeledActionable, "AllActionable", "NaiveBayes");
-
-  // Print all of the reviews that were labeled as unactionable
-  const allReviewsLabeledUnactionable = unactionableLabeledCorrectly.concat(
-    actionableLabeledIncorrectly
-  );
-  writeResultsToFile(allReviewsLabeledUnactionable, "AllUnactionable", "NaiveBayes");
-
-  // Print the reviews that are actually actionable but were incorrectly labeled as unactionable
   writeResultsToFile(
+    actionableLabeledCorrectly,
+    unactionableLabeledCorrectly,
     actionableLabeledIncorrectly,
-    "ActionableLabeledIncorrectly",
-    "NaiveBayes"
-  );
-
-  // Print the reviews that are actually unactionable but were incorrectly labeled as actionable
-  writeResultsToFile(
     unactionableLabeledIncorrectly,
-    "UnactionableLabeledIncorrectly",
     "NaiveBayes"
   );
 
   // Step 8: Print the results to the console
-  console.log(`Overall Accuracy: ${overallAccuracy * 100}%`);
-
-  console.log(
-    "Number of reviews labeled as actionable: " +
-      allReviewsLabeledActionable.length
-  );
-
-  console.log(
-    "Number of reviews labeled as unactionable: " +
-      allReviewsLabeledUnactionable.length
+  printEvaluationMetrics(
+    "Naive Bayes",
+    actionableLabeledCorrectly,
+    actionableLabeledIncorrectly,
+    unactionableLabeledCorrectly,
+    unactionableLabeledIncorrectly
   );
 };
 
