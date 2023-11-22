@@ -116,7 +116,7 @@ const calculateProbActionableOfRealReview = (
   return overallProb;
 };
 /**
- * Formats the training data to be used in FNN, RNN, LSTM
+ * Formats the training data to be used in GRU, RNN, LSTM
  * @returns An array of the training reviews
  */
 const formatBrainTrainingData = () => {
@@ -136,7 +136,7 @@ const formatBrainTrainingData = () => {
  * Train the network and save the trained network to a JSON file
  * @param {*} trainingData The formatted training data
  * @param {*} neuralNetwork The neural network object from Brain.js
- * @param {"FNN" | "RNN" | "LSTM"} neuralNetworkType
+ * @param {"RNN" | "LSTM" | "GRU"} neuralNetworkType
  */
 const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
   // The file to be written
@@ -173,7 +173,7 @@ const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
  * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
  * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)
  * @param {string[]} incorrectUnactionable The reviews that were labeled actionable but are really unactionable (false positive)
- * @param {"NaiveBayes" | "FNN" | "RNN" | "LSTM"} classifier The classifier that produced the results
+ * @param {"NaiveBayes" | "RNN" | "LSTM" | "GRU"} classifier The classifier that produced the results
  */
 const writeResultsToFile = (
   correctActionable,
@@ -222,7 +222,7 @@ const writeResultsToFile = (
 
 /**
  * Get a previously trained neural network
- * @param {"FNN" | "RNN" | "LSTM"} networkType
+ * @param {"RNN" | "LSTM" | "GRU"} networkType
  * @returns The JSON of the previously trained network if it exists. Null otherwise.
  */
 const getTrainedNetwork = (networkType) => {
@@ -239,7 +239,7 @@ const getTrainedNetwork = (networkType) => {
 
 /**
  * Evaluate the classifier's run and print the results to the console
- * @param {"Naive Bayes" | "LSTM" | "RNN" | "FNN"} classifierType The neural network type being evaluated
+ * @param {"Naive Bayes" | "LSTM" | "RNN" | "GRU"} classifierType The neural network type being evaluated
  * @param {string[]} correctActionable The reviews that were labeled actionable and really are actionable (true positive)
  * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
  * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)

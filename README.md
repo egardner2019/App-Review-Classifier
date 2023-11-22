@@ -15,7 +15,7 @@ This is a project to classify reviews in app stores. App reviews are classified 
 
 Four evaluation methods were used to classify app reviews as actionable/unactionable:
 1. Naive Bayes
-2. Feedforward Neural Network (FNN)
+2. Gated Recurrent Unit (GRU)
 3. Recurrent Neural Network (RNN)
 4. Long Short-Term Memory Neural Network (LSTM)
 

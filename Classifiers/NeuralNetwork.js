@@ -10,7 +10,7 @@ import {
 
 /**
  * Create, train, and run a neural network
- * @param {"FNN" | "LSTM" | "RNN"} networkType The type of neural network to be used
+ * @param {"GRU" | "LSTM" | "RNN"} networkType The type of neural network to be used
  * @param trainingData The formatted training data
  */
 const NeuralNetwork = (networkType, trainingData) => {
@@ -23,9 +23,10 @@ const NeuralNetwork = (networkType, trainingData) => {
     case "RNN":
       // Create the Recurrent Neural Network
       net = new brain.recurrent.RNN();
+      break;
     default:
-      // Create the Feedforward Neural Network
-      net = new brain.NeuralNetwork();
+      // Create the Gated Recurrent Unit
+      net = new brain.recurrent.GRU();
       break;
   }
 

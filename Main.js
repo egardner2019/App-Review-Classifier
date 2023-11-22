@@ -3,8 +3,7 @@ import NeuralNetwork from "./Classifiers/NeuralNetwork.js";
 import Categorizer from "./Classifiers/Categorizer.js";
 import { formatBrainTrainingData } from "./HelperMethods.js";
 
-// TODO: get FNN working
-// TODO: implement the classifier
+// TODO: implement the categorizer
 // TODO: Uncomment the training data and run all networks on all data
 
 const Main = () => {
@@ -13,9 +12,8 @@ const Main = () => {
 
   const formattedBrainTrainingData = formatBrainTrainingData();
 
-  // Run the Feedforward Neural Network classifier
-  // TODO: figure out how to format the data for the FNN
-  // NeuralNetwork("FNN", formattedBrainTrainingData);
+  // Run the Gated Recurrent Unit classifier
+  NeuralNetwork("GRU", formattedBrainTrainingData);
 
   // Run the Recurrent Neural Network classifier
   NeuralNetwork("RNN", formattedBrainTrainingData);
