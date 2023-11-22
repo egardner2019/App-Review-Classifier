@@ -1,7 +1,7 @@
 import NaiveBayes from "./Classifiers/NaiveBayes.js";
 import NeuralNetwork from "./Classifiers/NeuralNetwork.js";
 import Categorizer from "./Classifiers/Categorizer.js";
-import { formatBrainTrainingData, createAndRunNeuralNetwork } from "./HelperMethods.js";
+import { formatBrainTrainingData } from "./HelperMethods.js";
 
 // TODO: get FNN working
 // TODO: implement the classifier

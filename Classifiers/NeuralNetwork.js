@@ -1,6 +1,6 @@
 import brain from "brain.js";
-import realActionableReviews from "./RealData/RealActionable.js";
-import realUnactionableReviews from "./RealData/RealUnactionable.js";
+import realActionableReviews from "../RealData/RealActionable.js";
+import realUnactionableReviews from "../RealData/RealUnactionable.js";
 import {
   getTrainedNetwork,
   trainNeuralNetwork,

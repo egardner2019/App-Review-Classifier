@@ -228,10 +228,10 @@ const writeResultsToFile = (
 const getTrainedNetwork = (networkType) => {
   try {
     const data = fs.readFileSync(`TrainedNeuralNetworks/${networkType}.json`);
-    console.log("found json data: ", data);
+    console.log(`Found pre-trained ${networkType}.`);
     return JSON.parse(data);
   } catch (err) {
-    console.log("Error in getting trained network:", err);
+    console.log(`No pre-trained ${networkType} was found. Training now...`);
     // If an error occurs (e.g. if the file doesn't exist), return null
     return null;
   }
@@ -262,7 +262,7 @@ const printEvaluationMetrics = (
   };
 
   console.log(
-    `------------ Results of the ${classifierType} method ------------`
+    `\n------------ Results of the ${classifierType} method ------------`
   );
   console.log(
     "Accuracy:",
@@ -277,7 +277,8 @@ const printEvaluationMetrics = (
   );
   console.log(
     "Recall:",
-    formatNumber(truePosCount / (truePosCount + falseNegCount))
+    formatNumber(truePosCount / (truePosCount + falseNegCount)),
+    "\n"
   );
 };
 
