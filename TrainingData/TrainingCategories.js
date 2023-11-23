@@ -1,19 +1,18 @@
 const categories = {
-  app: "App",
-  gui: "GUI",
-  contents: "Contents",
-  pricing: "Pricing",
-  featureFunctionality: "Feature/Functionality",
-  improvement: "Improvement",
-  updatesVersions: "Updates/Versions",
-  resources: "Resources",
-  security: "Security",
-  download: "Download",
-  model: "Model",
-  company: "Company",
+  app: "app",
+  gui: "gui",
+  contents: "contents",
+  pricing: "pricing",
+  featureFunctionality: "featureFunctionality",
+  improvement: "improvement",
+  updatesVersions: "updatesVersions",
+  resources: "resources",
+  security: "security",
+  model: "model",
+  company: "company",
 };
 
-const CategorizedReviews = [
+const trainingCategorizedReviews = [
   {
     review: "Please add a dark mode for nighttime use.",
     category: categories.improvement,
@@ -5740,3 +5739,5 @@ const CategorizedReviews = [
     category: categories.contents,
   },
 ];
+
+export { trainingCategorizedReviews, categories };

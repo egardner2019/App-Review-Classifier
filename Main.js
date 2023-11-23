@@ -3,20 +3,20 @@ import NeuralNetwork from "./Classifiers/NeuralNetwork.js";
 import Categorizer from "./Classifiers/Categorizer.js";
 import { formatBrainTrainingData } from "./HelperMethods.js";
 
-// TODO: implement the categorizer
+// TODO: finish the categorizer
 // TODO: Uncomment the training data and run all networks on all data
 
 const Main = () => {
-  // Run the Naive Bayes classifier
-  NaiveBayes();
+  // // Run the Naive Bayes classifier
+  // NaiveBayes();
 
-  const formattedBrainTrainingData = formatBrainTrainingData();
+  // const formattedBrainTrainingData = formatBrainTrainingData();
 
-  // Run the Gated Recurrent Unit classifier
-  NeuralNetwork("GRU", formattedBrainTrainingData);
+  // // Run the Gated Recurrent Unit classifier
+  // NeuralNetwork("GRU", formattedBrainTrainingData);
 
-  // Run the Long Short-Term Neural Network classifier
-  NeuralNetwork("LSTM", formattedBrainTrainingData);
+  // // Run the Long Short-Term Neural Network classifier
+  // NeuralNetwork("LSTM", formattedBrainTrainingData);
 
   // Categorize the reviews
   Categorizer();
