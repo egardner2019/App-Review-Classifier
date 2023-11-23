@@ -11,7 +11,6 @@ This is a project to classify reviews in app stores. App reviews are classified 
 - Updates/versions (specific versions or update process)
 - Resources (battery consumption, storage, etc.)
 - Security (app security or personal data privacy)
-- Download
 - Model (specific device/OS versions)
 - Company
 
