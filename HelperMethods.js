@@ -251,48 +251,84 @@ const getTrainedNetwork = (networkType) => {
   }
 };
 
+const formatNumber = (num) => {
+  return (num * 100).toFixed(2) + "%";
+};
+
 /**
  * Evaluate the classifier's run and print the results to the console
- * @param {"Naive Bayes" | "LSTM" | "GRU"} classifierType The neural network type being evaluated
- * @param {string[]} correctActionable The reviews that were labeled actionable and really are actionable (true positive)
- * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
- * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)
- * @param {string[]} incorrectUnactionable The reviews that were labeled actionable but are really unactionable (false positive)
+ * @param {"Naive Bayes" | "LSTM" | "GRU" | "CFC"} classifierType The neural network type being evaluated
+ * @param {"app" | "gui" | "contents" | "pricing" | "featureFunctionality" | "improvement" | "updatesVersions" | "resources" | "security" | "model" | "company"} cfcCategory The category being evaluated
+ * @param {string[]} truePositive The true positive reviews (actual: in category/actionable, label: in category/actionable)
+ * @param {string[]} falseNegative The false negative reviews (actual: in category/actionable, label: not in category/unactionable)
+ * @param {string[]} trueNegative The true negative reviews (actual: not in category/unactionable, label: not in category/unactionable)
+ * @param {string[]} falsePositive The false positive reviews (actual: not in category/unactionable, label: in category/actionable)
  */
 const printEvaluationMetrics = (
   classifierType,
-  correctActionable,
-  incorrectActionable,
-  correctUnactionable,
-  incorrectUnactionable
+  cfcCategory,
+  truePositive,
+  falseNegative,
+  trueNegative,
+  falsePositive
 ) => {
-  const truePosCount = correctActionable.length;
-  const falseNegCount = incorrectActionable.length;
-  const trueNegCount = correctUnactionable.length;
-  const falsePosCount = incorrectUnactionable.length;
+  const truePosCount = truePositive.length;
+  const falseNegCount = falseNegative.length;
+  const trueNegCount = trueNegative.length;
+  const falsePosCount = falsePositive.length;
 
-  const formatNumber = (num) => {
-    return (num * 100).toFixed(2) + "%";
-  };
+  let accuracy, precision, recall;
 
-  console.log(
-    `\n------------ Results of the ${classifierType} method ------------`
-  );
-  console.log(
-    "Accuracy:",
-    formatNumber(
+  // Prevent division by 0
+  if (truePosCount === 0) {
+    if (trueNegCount === 0 && falsePosCount === 0 && falseNegCount === 0) {
+      accuracy = 0;
+    }
+    if (falseNegCount === 0) {
+      recall = 0;
+    }
+    if (falsePosCount === 0) {
+      precision = 0;
+    }
+  }
+
+  // If the metric wasn't already calculated to be 0 (preventing NaN), calculate it now
+  if (accuracy !== 0)
+    accuracy =
       (truePosCount + trueNegCount) /
-        (truePosCount + trueNegCount + falsePosCount + falseNegCount)
+      (truePosCount + trueNegCount + falsePosCount + falseNegCount);
+  if (precision !== 0)
+    precision = truePosCount / (truePosCount + falsePosCount);
+  if (recall !== 0) recall = truePosCount / (truePosCount + falseNegCount);
+
+  // Print the results to the console
+  console.log(
+    `\n------------ Results of ${classifierType} Method ${
+      cfcCategory && `(${cfcCategory}) `
+    }------------`
+  );
+  console.log("Accuracy:", formatNumber(accuracy));
+  console.log("Precision:", formatNumber(precision));
+  console.log("Recall:", formatNumber(recall), "\n");
+
+  if (cfcCategory) {
+    return {
+      category: cfcCategory,
+      accuracy: accuracy,
+      precision: precision,
+      recall: recall,
+    };
+  }
+};
+
+const printAverageMetric = (categoryEvalMetrics, metricName) => {
+  console.log(
+    `Average ${metricName} across categories:`,
+    formatNumber(
+      categoryEvalMetrics
+        .map((categoryMetric) => categoryMetric[metricName]) // Get an array of the metric value for each category
+        .reduce((a, b) => a + b) / categoryEvalMetrics.length // Get the average of those metric values
     )
-  );
-  console.log(
-    "Precision:",
-    formatNumber(truePosCount / (truePosCount + falsePosCount))
-  );
-  console.log(
-    "Recall:",
-    formatNumber(truePosCount / (truePosCount + falseNegCount)),
-    "\n"
   );
 };
 
@@ -304,4 +340,5 @@ export {
   writeResultsToFile,
   getTrainedNetwork,
   printEvaluationMetrics,
+  printAverageMetric,
 };

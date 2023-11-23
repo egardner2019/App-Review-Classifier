@@ -81,6 +81,7 @@ const NeuralNetwork = (networkType, trainingData) => {
   // Print evaluation metrics to the console
   printEvaluationMetrics(
     networkType,
+    null,
     correctActionable,
     incorrectActionable,
     correctUnactionable,
