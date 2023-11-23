@@ -4,13 +4,13 @@ import Categorizer from "./Classifiers/Categorizer.js";
 import { formatBrainTrainingData } from "./HelperMethods.js";
 
 // TODO: finish the categorizer
-// TODO: Uncomment the training data and run all networks on all data
+// TODO: Train GRU and LSTM with 500 iterations each
 
 const Main = () => {
   // // Run the Naive Bayes classifier
   // NaiveBayes();
 
-  // const formattedBrainTrainingData = formatBrainTrainingData();
+  const formattedBrainTrainingData = formatBrainTrainingData();
 
   // // Run the Gated Recurrent Unit classifier
   // NeuralNetwork("GRU", formattedBrainTrainingData);

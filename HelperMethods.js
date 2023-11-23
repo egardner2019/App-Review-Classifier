@@ -153,9 +153,10 @@ const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
   // Train the neural network with the data
   neuralNetwork.train(trainingData, {
     log: true,
-    logPeriod: 1, // How many iterations to log after
-    iterations: 1, // Max number of iterations
-    errorThresh: 0.1, // Stop training once this error threshold is reached
+    logPeriod: 100, // How many iterations to log after
+    iterations: 500, // Max number of iterations
+    // errorThresh: 0.1, // Stop training once this error threshold is reached
+    // timeout: 14400000 // Run for 4 hours (this is in milliseconds)
   });
 
   // Convert the trained neural network to JSON
