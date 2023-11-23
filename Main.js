@@ -15,9 +15,6 @@ const Main = () => {
   // Run the Gated Recurrent Unit classifier
   NeuralNetwork("GRU", formattedBrainTrainingData);
 
-  // Run the Recurrent Neural Network classifier
-  NeuralNetwork("RNN", formattedBrainTrainingData);
-
   // Run the Long Short-Term Neural Network classifier
   NeuralNetwork("LSTM", formattedBrainTrainingData);
 

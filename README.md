@@ -1,5 +1,7 @@
 # App Review Classification
+
 This is a project to classify reviews in app stores. App reviews are classified as actionable/unactionable and put into the following categories (inspired by <a href="https://doi.org/10.1145/2950290.2950299">this research paper</a>).
+
 - App (entire app, crash reports, rating, general feedback, notifications)
 - GUI
 - Contents
@@ -13,11 +15,13 @@ This is a project to classify reviews in app stores. App reviews are classified 
 - Model (specific device/OS versions)
 - Company
 
-Four evaluation methods were used to classify app reviews as actionable/unactionable:
+Three evaluation methods were used to classify app reviews as actionable/unactionable:
+
 1. Naive Bayes
 2. Gated Recurrent Unit (GRU)
-3. Recurrent Neural Network (RNN)
-4. Long Short-Term Memory Neural Network (LSTM)
+3. Long Short-Term Memory Neural Network (LSTM)
+
+Note: The use of a recurrent neural network (RNN) and a feedforward neural network (FNN) was attempted, but they failed to train.
 
 I manually implemented the Naive Bayes classifier using the steps described in <a href="https://courses.cs.washington.edu/courses/cse312/18sp/lectures/naive-bayes/naivebayesnotes.pdf">this research paper</a>. The other three methods use the <a href="https://www.npmjs.com/package/brain.js">brain.js npm package</a>.
 

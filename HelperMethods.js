@@ -116,17 +116,25 @@ const calculateProbActionableOfRealReview = (
   return overallProb;
 };
 /**
- * Formats the training data to be used in GRU, RNN, LSTM
+ * Formats the training data to be used in GRU and LSTM
  * @returns An array of the training reviews
  */
 const formatBrainTrainingData = () => {
   let formattedTrainingData = [];
 
+  // Convert the review into words so that words are used in training instead of individual characters
+  // https://github.com/BrainJS/brain.js/issues/871
   trainingActionableReviews.forEach((review) =>
-    formattedTrainingData.push({ input: review, output: "actionable" })
+    formattedTrainingData.push({
+      input: splitReviewIntoWords(review),
+      output: "actionable",
+    })
   );
   trainingUnactionableReviews.forEach((review) =>
-    formattedTrainingData.push({ input: review, output: "unactionable" })
+    formattedTrainingData.push({
+      input: splitReviewIntoWords(review),
+      output: "unactionable",
+    })
   );
 
   return formattedTrainingData;
@@ -136,14 +144,19 @@ const formatBrainTrainingData = () => {
  * Train the network and save the trained network to a JSON file
  * @param {*} trainingData The formatted training data
  * @param {*} neuralNetwork The neural network object from Brain.js
- * @param {"RNN" | "LSTM" | "GRU"} neuralNetworkType
+ * @param {"LSTM" | "GRU"} neuralNetworkType
  */
 const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
   // The file to be written
   const filePath = `TrainedNeuralNetworks/${neuralNetworkType}.json`;
 
   // Train the neural network with the data
-  neuralNetwork.train(trainingData);
+  neuralNetwork.train(trainingData, {
+    log: true,
+    logPeriod: 1, // How many iterations to log after
+    iterations: 1, // Max number of iterations
+    errorThresh: 0.1, // Stop training once this error threshold is reached
+  });
 
   // Convert the trained neural network to JSON
   const neuralNetworkJSON = neuralNetwork.toJSON();
@@ -173,7 +186,7 @@ const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
  * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
  * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)
  * @param {string[]} incorrectUnactionable The reviews that were labeled actionable but are really unactionable (false positive)
- * @param {"NaiveBayes" | "RNN" | "LSTM" | "GRU"} classifier The classifier that produced the results
+ * @param {"NaiveBayes" | "LSTM" | "GRU"} classifier The classifier that produced the results
  */
 const writeResultsToFile = (
   correctActionable,
@@ -222,7 +235,7 @@ const writeResultsToFile = (
 
 /**
  * Get a previously trained neural network
- * @param {"RNN" | "LSTM" | "GRU"} networkType
+ * @param {"LSTM" | "GRU"} networkType
  * @returns The JSON of the previously trained network if it exists. Null otherwise.
  */
 const getTrainedNetwork = (networkType) => {
@@ -239,7 +252,7 @@ const getTrainedNetwork = (networkType) => {
 
 /**
  * Evaluate the classifier's run and print the results to the console
- * @param {"Naive Bayes" | "LSTM" | "RNN" | "GRU"} classifierType The neural network type being evaluated
+ * @param {"Naive Bayes" | "LSTM" | "GRU"} classifierType The neural network type being evaluated
  * @param {string[]} correctActionable The reviews that were labeled actionable and really are actionable (true positive)
  * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
  * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)

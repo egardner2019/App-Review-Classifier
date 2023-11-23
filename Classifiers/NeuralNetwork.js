@@ -10,27 +10,17 @@ import {
 
 /**
  * Create, train, and run a neural network
- * @param {"GRU" | "LSTM" | "RNN"} networkType The type of neural network to be used
+ * @param {"GRU" | "LSTM"} networkType The type of neural network to be used
  * @param trainingData The formatted training data
  */
 const NeuralNetwork = (networkType, trainingData) => {
-  let net;
-  switch (networkType) {
-    case "LSTM":
-      // Create the Long-Short Term Memory Neural Network
-      net = new brain.recurrent.LSTM();
-      break;
-    case "RNN":
-      // Create the Recurrent Neural Network
-      net = new brain.recurrent.RNN();
-      break;
-    default:
-      // Create the Gated Recurrent Unit
-      net = new brain.recurrent.GRU();
-      break;
-  }
+  // Create the neural network object
+  const net =
+    networkType === "LSTM"
+      ? new brain.recurrent.LSTM()
+      : new brain.recurrent.GRU();
 
-  // Check if a trained LSTM network has been saved
+  // Check if a trained network has been saved
   const trainedNetworkJSON = getTrainedNetwork(networkType);
 
   // If a trained network was found, apply it to this network

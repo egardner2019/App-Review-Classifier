@@ -1,4 +1,3 @@
-// To run the program, run "node NaiveBayes.js" within this project in the terminal
 import trainingActionableReviews from "../TrainingData/TrainingActionable.js";
 import trainingUnactionableReviews from "../TrainingData/TrainingUnactionable.js";
 import realActionableReviews from "../RealData/RealActionable.js";
