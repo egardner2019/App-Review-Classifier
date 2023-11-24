@@ -153,10 +153,8 @@ const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
   // Train the neural network with the data
   neuralNetwork.train(trainingData, {
     log: true,
-    logPeriod: 100, // How many iterations to log after
+    logPeriod: 100, // Log progress after this many iterations
     iterations: 500, // Max number of iterations
-    // errorThresh: 0.1, // Stop training once this error threshold is reached
-    // timeout: 14400000 // Run for 4 hours (this is in milliseconds)
   });
 
   // Convert the trained neural network to JSON
@@ -348,10 +346,14 @@ const writeReviewsByCategories = (allCategories, categorizedResults) => {
 
   allCategories.forEach((category) => {
     if (categorizedResults[category].length === 0)
-      writeStream.write(`No reviews were categorized as ${category}!\n\n`);
+      writeStream.write(
+        `No reviews were categorized as ${getNiceCategoryName(category)}!\n\n`
+      );
     else {
       writeStream.write(
-        `${categorizedResults[category].length} reviews were categorized as ${category}...\n`
+        `${
+          categorizedResults[category].length
+        } reviews were categorized as ${getNiceCategoryName(category)}...\n`
       );
       categorizedResults[category].forEach((result) =>
         writeStream.write(" • " + result + "\n")
@@ -369,6 +371,62 @@ const writeReviewsByCategories = (allCategories, categorizedResults) => {
   writeStream.end();
 };
 
+/**
+ * Writes content to "Results/Categorizer/IncorrectlyCategorized.txt"
+ * @param {*} results The array containing the formatted results
+ */
+const writeIncorrectlyCategorized = (results) => {
+  const writeStream = fs.createWriteStream(
+    "Results/Categorizer/IncorrectlyCategorized.txt"
+  );
+
+  results.forEach((result) => {
+    const { review, realCategories, labeledCategory } = result;
+
+    // Make the category names pretty for the output
+    realCategories.forEach((category, index) =>
+      realCategories.splice(index, 1, getNiceCategoryName(category))
+    );
+    const niceLabeledCategory = getNiceCategoryName(labeledCategory);
+
+    if (!realCategories.includes(niceLabeledCategory)) {
+      // Format the real categories for the output
+      let formattedRealCategories = `"${realCategories}"`;
+      if (realCategories.length === 2)
+        formattedRealCategories = `"${realCategories.join(`" or "`)}"`;
+      else if (realCategories.length > 2)
+        formattedRealCategories = `"${realCategories
+          .slice(0, realCategories.length - 1)
+          .join(`", "`)}", or "${realCategories[realCategories.length - 1]}"`;
+
+      // Write to the file
+      writeStream.write(
+        `"${review}"\n\tshould have been categorized as ${formattedRealCategories} but was categorized as "${niceLabeledCategory}".\n\n`
+      );
+    }
+  });
+
+  writeStream.on("error", (error) => {
+    console.error(
+      `Unable to write data to "Results/Categorizer/IncorrectlyCategorized.txt". Error: ${error.message}`
+    );
+  });
+
+  writeStream.end();
+};
+
+/**
+ * Make a category name pretty for writing to a file
+ * @param {string} category The category to format for the output
+ * @returns The pretty category
+ */
+const getNiceCategoryName = (category) => {
+  if (category === "featureFunctionality") return "feature/functionality";
+  else if (category === "gui") return "GUI";
+  else if (category === "updatesVersions") return "updates/versions";
+  else return category;
+};
+
 export {
   iterateThroughReviews,
   calculateProbActionableOfRealReview,
@@ -379,4 +437,6 @@ export {
   printEvaluationMetrics,
   printAverageMetric,
   writeReviewsByCategories,
+  writeIncorrectlyCategorized,
+  getNiceCategoryName,
 };

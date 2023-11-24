@@ -4,7 +4,8 @@ import realCategorizedReviews from "../RealData/RealCategories.js";
 import {
   printAverageMetric,
   printEvaluationMetrics,
-  writeReviewsByCategories
+  writeIncorrectlyCategorized,
+  writeReviewsByCategories,
 } from "../HelperMethods.js";
 
 const Categorizer = () => {
@@ -61,7 +62,7 @@ const Categorizer = () => {
     });
   });
 
-  // Evaluate results (calculate accuracy, precision, recall for each category, and the average of each metric across categories)
+  // Evaluate results (calculate accuracy, precision, and recall for each category, and the average of each metric across categories)
   // Create an array to hold the evaluation metrics of each category
   let categoryEvalMetrics = [];
   allCategories.forEach((category) => {
@@ -113,7 +114,7 @@ const Categorizer = () => {
   writeReviewsByCategories(allCategories, categorizedResults);
 
   // Print the reviews that were incorrectly categorized
-
+  writeIncorrectlyCategorized(formattedResults);
 };
 
 export default Categorizer;
