@@ -205,12 +205,6 @@ const writeResultsToFile = (
 
       data.forEach((review) => writeStream.write(`${review}\n`));
 
-      writeStream.on("close", () => {
-        console.log(
-          `Wrote ${data.length} reviews to Results/${classifier}/${fileName}.txt`
-        );
-      });
-
       writeStream.on("error", (error) => {
         console.error(
           `Unable to write data to Results/${classifier}/${fileName}.txt. Error: ${error.message}`
@@ -251,6 +245,11 @@ const getTrainedNetwork = (networkType) => {
   }
 };
 
+/**
+ * Format a number to be printed to the output (2 decimal places and a % sign)
+ * @param {Number} num The number to be formatted
+ * @returns The formatted number
+ */
 const formatNumber = (num) => {
   return (num * 100).toFixed(2) + "%";
 };
@@ -321,6 +320,11 @@ const printEvaluationMetrics = (
   }
 };
 
+/**
+ * Print the average metric across categories
+ * @param {Array} categoryEvalMetrics An array containing the evaluation metrics for each category
+ * @param {"accuracy" | "precision"| "recall"} metricName The metric to print
+ */
 const printAverageMetric = (categoryEvalMetrics, metricName) => {
   console.log(
     `Average ${metricName} across categories:`,
@@ -332,6 +336,39 @@ const printAverageMetric = (categoryEvalMetrics, metricName) => {
   );
 };
 
+/**
+ * Write the results from the CFC classifier to ReviewsByCategories.txt
+ * @param {string[]} allCategories An array containing all of the possible categories (e.g. app, company, gui)
+ * @param {object} categorizedResults An object containing all of the reviews categorized into arrays
+ */
+const writeReviewsByCategories = (allCategories, categorizedResults) => {
+  const writeStream = fs.createWriteStream(
+    "Results/Categorizer/ReviewsByCategories.txt"
+  );
+
+  allCategories.forEach((category) => {
+    if (categorizedResults[category].length === 0)
+      writeStream.write(`No reviews were categorized as ${category}!\n\n`);
+    else {
+      writeStream.write(
+        `${categorizedResults[category].length} reviews were categorized as ${category}...\n`
+      );
+      categorizedResults[category].forEach((result) =>
+        writeStream.write(" • " + result + "\n")
+      );
+      writeStream.write("\n");
+    }
+  });
+
+  writeStream.on("error", (error) => {
+    console.error(
+      `Unable to write data to "Results/Categorizer/ReviewsByCategories.txt". Error: ${error.message}`
+    );
+  });
+
+  writeStream.end();
+};
+
 export {
   iterateThroughReviews,
   calculateProbActionableOfRealReview,
@@ -341,4 +378,5 @@ export {
   getTrainedNetwork,
   printEvaluationMetrics,
   printAverageMetric,
+  writeReviewsByCategories,
 };

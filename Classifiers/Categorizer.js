@@ -4,6 +4,7 @@ import realCategorizedReviews from "../RealData/RealCategories.js";
 import {
   printAverageMetric,
   printEvaluationMetrics,
+  writeReviewsByCategories
 } from "../HelperMethods.js";
 
 const Categorizer = () => {
@@ -34,13 +35,29 @@ const Categorizer = () => {
   );
   cfc.train();
 
+  const categorizedResults = {
+    app: [],
+    gui: [],
+    contents: [],
+    pricing: [],
+    featureFunctionality: [],
+    improvement: [],
+    updatesVersions: [],
+    resources: [],
+    security: [],
+    model: [],
+    company: [],
+  };
+
   // Run the categorizer on the real data
   let formattedResults = [];
   realCategorizedReviews.forEach((reviewObj) => {
+    let cfcResult = cfc.classify(reviewObj.review);
+    categorizedResults[cfcResult].push(reviewObj.review);
     formattedResults.push({
       review: reviewObj.review,
       realCategories: reviewObj.categories,
-      labeledCategory: cfc.classify(reviewObj.review),
+      labeledCategory: cfcResult,
     });
   });
 
@@ -93,8 +110,10 @@ const Categorizer = () => {
   printAverageMetric(categoryEvalMetrics, "recall");
 
   // Print the reviews by their resulting categorization
+  writeReviewsByCategories(allCategories, categorizedResults);
 
   // Print the reviews that were incorrectly categorized
+
 };
 
 export default Categorizer;
