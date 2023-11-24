@@ -301,7 +301,7 @@ const printEvaluationMetrics = (
   // Print the results to the console
   console.log(
     `\n------------ Results of ${classifierType} Method ${
-      cfcCategory && `(${cfcCategory}) `
+      cfcCategory ? `(${getNiceCategoryName(cfcCategory)}) ` : ""
     }------------`
   );
   console.log("Accuracy:", formatNumber(accuracy));
