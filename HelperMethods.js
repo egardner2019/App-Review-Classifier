@@ -185,7 +185,7 @@ const trainNeuralNetwork = (trainingData, neuralNetwork, neuralNetworkType) => {
  * @param {string[]} incorrectActionable The reviews that were labeled unactionable but are really actionable (false negative)
  * @param {string[]} correctUnactionable The reviews that were labeled unactionable and are really unactionable (true negative)
  * @param {string[]} incorrectUnactionable The reviews that were labeled actionable but are really unactionable (false positive)
- * @param {"NaiveBayes" | "LSTM" | "GRU"} classifier The classifier that produced the results
+ * @param {"NaiveBayes" | "LSTM" | "GRU" | "CFC"} classifier The classifier that produced the results
  */
 const writeResultsToFile = (
   correctActionable,
@@ -254,8 +254,8 @@ const formatNumber = (num) => {
 
 /**
  * Evaluate the classifier's run and print the results to the console
- * @param {"Naive Bayes" | "LSTM" | "GRU" | "CFC"} classifierType The neural network type being evaluated
- * @param {"app" | "gui" | "contents" | "pricing" | "featureFunctionality" | "improvement" | "updatesVersions" | "resources" | "security" | "model" | "company"} cfcCategory The category being evaluated
+ * @param {"Naive Bayes" | "LSTM" | "GRU" | "Categorizer" | "CFC Classifier"} classifierType The method being evaluated
+ * @param {null | "app" | "gui" | "contents" | "pricing" | "featureFunctionality" | "improvement" | "updatesVersions" | "resources" | "security" | "model" | "company"} cfcCategory The category being evaluated
  * @param {string[]} truePositive The true positive reviews (actual: in category/actionable, label: in category/actionable)
  * @param {string[]} falseNegative The false negative reviews (actual: in category/actionable, label: not in category/unactionable)
  * @param {string[]} trueNegative The true negative reviews (actual: not in category/unactionable, label: not in category/unactionable)

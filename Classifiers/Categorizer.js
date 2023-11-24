@@ -95,7 +95,7 @@ const Categorizer = () => {
     // Get the results for the category, add it to the array, and print to the console
     categoryEvalMetrics.push(
       printEvaluationMetrics(
-        "CFC",
+        "Categorizer",
         category,
         truePos,
         falseNeg,
