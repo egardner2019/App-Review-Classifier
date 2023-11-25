@@ -52,10 +52,10 @@ const NeuralNetwork = (networkType, trainingData) => {
   // Put the actionable reviews into the correct/incorrect array
   actionableClassified.forEach((classification, index) => {
     const thisReview = realActionableReviews[index];
-    if (classification === "actionable") {
-      correctActionable.push(thisReview);
-    } else {
+    if (classification === "unactionable") {
       incorrectActionable.push(thisReview);
+    } else {
+      correctActionable.push(thisReview);
     }
   });
 
@@ -72,8 +72,8 @@ const NeuralNetwork = (networkType, trainingData) => {
   // Write the results to the associated files
   writeResultsToFile(
     correctActionable,
-    correctUnactionable,
     incorrectActionable,
+    correctUnactionable,
     incorrectUnactionable,
     networkType
   );

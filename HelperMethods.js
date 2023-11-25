@@ -234,7 +234,7 @@ const writeResultsToFile = (
 const getTrainedNetwork = (networkType) => {
   try {
     const data = fs.readFileSync(`TrainedNeuralNetworks/${networkType}.json`);
-    console.log(`Found pre-trained ${networkType}.`);
+    console.log(`Using pre-trained ${networkType}...`);
     return JSON.parse(data);
   } catch (err) {
     console.log(`No pre-trained ${networkType} was found. Training now...`);

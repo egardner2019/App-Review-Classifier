@@ -6,7 +6,7 @@ import { formatBrainTrainingData } from "./HelperMethods.js";
 
 const Main = () => {
   // Run the Naive Bayes classifier
-  // NaiveBayes();
+  NaiveBayes();
   
   // Use CFC to classify reviews as actionable/unactionable
   CFCClassifier();
@@ -17,7 +17,7 @@ const Main = () => {
   NeuralNetwork("GRU", formattedBrainTrainingData);
 
   // Run the Long Short-Term Neural Network classifier
-  //NeuralNetwork("LSTM", formattedBrainTrainingData);
+  NeuralNetwork("LSTM", formattedBrainTrainingData);
 
   // Categorize the reviews
   Categorizer();
