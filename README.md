@@ -43,6 +43,16 @@ The following results are represented in percentages.
 
 As you can see, CFC was the most accurate, Naive Bayes was the most precise, and LSTM had the highest recall.
 
+<h3>Categorization (Using CFC)</h3>
+
+| | Average | App | GUI | Contents | Pricing | Feature/Functionality | Improvement | Updates/Versions | Resources | Security | Model | Company |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Accuracy | 81.45 | 66.5 | 77 | 65 | 81.5 | 71 | 82.5 | 87.5 | 88 | 93.5 | 89.5 | 94 |
+| Precision | 34.88 | 52.78 | 8.33 | 47.06 | 93.48 | 0 | 55.56 | 37.04 | 20 | 0 | 25 | 44.44 |
+| Recall | 23.35 | 27.54 | 2.78 | 11.59 | 55.84 | 0 | 13.89 | 55.56 | 33.33 | 0 | 20 | 36.36 |
+
+The first column with data (Average) contains the average accuracy, precision, and recall across all 11 categories.
+
 <h2>How to Reproduce/Modify Results</h2>
 
 To run this program on your computer, complete the following steps...
