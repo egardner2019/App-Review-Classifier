@@ -29,6 +29,20 @@ I manually implemented the Naive Bayes classifier using the steps described in <
 
 The training data was generated with ChatGPT. The real data was manually gathered from the Google Play Store, Apple App Store, and Microsoft Store. I manually classified and categorized both the training reviews and the real reviews.
 
+<h2>Results</h2>
+
+<h3>Classification (Actionable/Unactionable)</h3>
+
+The following results are represented in percentages.
+
+| | Naive Bayes | CFC | GRU | LSTM |
+| --- | --- | --- | --- | --- |
+| Accuracy | 59.5 | 66 | 56 | 57.5 |
+| Precision | 67.27 | 61.76 | 63.04 | 54.29 |
+| Recall | 37 | 84 | 29 | 95 |
+
+As you can see, CFC was the most accurate, Naive Bayes was the most precise, and LSTM had the highest recall.
+
 <h2>How to Reproduce/Modify Results</h2>
 
 To run this program on your computer, complete the following steps...
