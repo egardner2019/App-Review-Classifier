@@ -4,17 +4,17 @@
 
 This is a project to classify and categorize reviews in app stores. App reviews are classified as actionable/unactionable and put into the following categories (inspired by <a href="https://doi.org/10.1145/2950290.2950299">this research paper</a>).
 
-- App (entire app, crash reports, rating, general feedback, notifications)
+- App (e.g. entire app, crash reports, rating, general feedback, notifications)
 - GUI (graphical user interface)
 - Contents
-- Pricing (in-app purchases, subscriptions, cost of app, advertisements)
+- Pricing (e.g. in-app purchases, subscriptions, cost of app, advertisements)
 - Feature/functionality (specific features/functionality)
 - Improvement (explicit enhancement requests)
 - Updates/versions (specific versions or update process)
-- Resources (battery consumption, storage, etc.)
+- Resources (e.g. battery consumption, storage)
 - Security (app security or personal data privacy)
 - Model (specific device/OS versions)
-- Company
+- Company (e.g. customer service)
 
 Four evaluation methods were used to classify app reviews as actionable/unactionable:
 
