@@ -2,21 +2,21 @@
   "name": "finalproject",
   "type": "module",
   "version": "1.0.0",
-  "description": "Naive Bayes implementation for app review classification",
-  "main": "NaiveBayes.js",
+  "description": "App review classification and categorization",
+  "main": "Main.js",
   "scripts": {
     "test": "node Main.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/egardner2019/NaiveBayes.git"
+    "url": "git+https://https://github.com/egardner2019/App-Review-Classifier.git"
   },
   "author": "Emma Gardner",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/egardner2019/NaiveBayes/issues"
+    "url": "https://github.com/egardner2019/App-Review-Classifier/issues"
   },
-  "homepage": "https://github.com/egardner2019/NaiveBayes#readme",
+  "homepage": "https://github.com/egardner2019/App-Review-Classifier#readme",
   "dependencies": {
     "brain.js": "^1.6.1",
     "cfc-classifier": "^1.0.1"
