@@ -2,7 +2,7 @@ import CFC from "cfc-classifier";
 import { trainingCategorizedReviews } from "../TrainingData/TrainingCategories.js";
 import realCategorizedReviews from "../RealData/RealCategories.js";
 import {
-  printAverageMetric,
+  printAverageMetrics,
   printEvaluationMetrics,
   writeIncorrectlyCategorized,
   writeReviewsByCategories,
@@ -106,10 +106,7 @@ const Categorizer = () => {
   });
 
   // Print the average metrics from all the categories
-  printAverageMetric(categoryEvalMetrics, "accuracy");
-  printAverageMetric(categoryEvalMetrics, "precision");
-  printAverageMetric(categoryEvalMetrics, "recall");
-  printAverageMetric(categoryEvalMetrics, "fScore");
+  printAverageMetrics(categoryEvalMetrics, false);
 
   // Print the reviews by their resulting categorization
   writeReviewsByCategories(allCategories, categorizedResults);

@@ -79,7 +79,7 @@ const NeuralNetwork = (networkType, trainingData) => {
   );
 
   // Print evaluation metrics to the console
-  printEvaluationMetrics(
+  return printEvaluationMetrics(
     networkType,
     null,
     correctActionable,

@@ -60,7 +60,7 @@ const CFCClassifier = () => {
   );
 
   // Print evaluation metrics to the console
-  printEvaluationMetrics(
+  return printEvaluationMetrics(
     "CFC Classifier",
     null,
     correctActionable,

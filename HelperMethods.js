@@ -304,32 +304,44 @@ const printEvaluationMetrics = (
       recall: recall,
       fScore: fScore,
     };
+  } else {
+    return {
+      classifierName: classifierType,
+      accuracy: accuracy,
+      precision: precision,
+      recall: recall,
+      fScore: fScore,
+    };
   }
 };
 
 /**
- * Print the average metric across categories
- * @param {Array} categoryEvalMetrics An array containing the evaluation metrics for each category
- * @param {"accuracy" | "precision"| "recall" | "fScore"} metricName The metric to print
+ * Print the average metrics across classifiers/categories
+ * @param {Array} allEvalMetrics An array containing the evaluation metrics for each classifier/category
+ * @param {boolean} isClassifiers Whether this is evaluating the classifiers (true) or the categorizer (false)
  */
-const printAverageMetric = (categoryEvalMetrics, metricName) => {
-  let availableCategoryMetrics = categoryEvalMetrics.length;
-  console.log(
-    `Average ${metricName === "fScore" ? "F-score" : metricName} across categories:`,
-    formatNumber(
-      categoryEvalMetrics
-        .map((categoryMetric) => categoryMetric[metricName]) // Get an array of the metric value for each category
-        // Get the average of those metric values
-        .reduce((a, b) => {
-          if (isNaN(b)) {
-            availableCategoryMetrics--;
-            return a;
-          } else {
-            return a + b;
-          }
-        }) / availableCategoryMetrics
-    )
-  );
+const printAverageMetrics = (allEvalMetrics, isClassifiers) => {
+  ["accuracy", "precision", "recall", "fScore"].forEach((metricName) => {
+    let availableMetrics = allEvalMetrics.length;
+    console.log(
+      `Average ${metricName === "fScore" ? "F-score" : metricName} across ${
+        isClassifiers ? "classifiers" : "categories"
+      }:`,
+      formatNumber(
+        allEvalMetrics
+          .map((thisMetric) => thisMetric[metricName]) // Get an array of the metric value for each classifier/category
+          // Get the average of those metric values
+          .reduce((a, b) => {
+            if (isNaN(b)) {
+              availableMetrics--;
+              return a;
+            } else {
+              return a + b;
+            }
+          }) / availableMetrics
+      )
+    );
+  });
 };
 
 /**
@@ -433,7 +445,7 @@ export {
   writeResultsToFile,
   getTrainedNetwork,
   printEvaluationMetrics,
-  printAverageMetric,
+  printAverageMetrics,
   writeReviewsByCategories,
   writeIncorrectlyCategorized,
   getNiceCategoryName,

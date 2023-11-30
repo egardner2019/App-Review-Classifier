@@ -2,22 +2,30 @@ import NaiveBayes from "./Classifiers/NaiveBayes.js";
 import CFCClassifier from "./Classifiers/CFC.js";
 import NeuralNetwork from "./Classifiers/NeuralNetwork.js";
 import Categorizer from "./Classifiers/Categorizer.js";
-import { formatBrainTrainingData } from "./HelperMethods.js";
+import {
+  formatBrainTrainingData,
+  printAverageMetrics,
+} from "./HelperMethods.js";
 
 const Main = () => {
-  // Run the Naive Bayes classifier
-  NaiveBayes();
-  
-  // Use CFC to classify reviews as actionable/unactionable
-  CFCClassifier();
+  const metrics = [];
+
+  // Run the Naive Bayes classifier and add the eval metrics to the metrics array
+  metrics.push(NaiveBayes());
+
+  // Use CFC to classify reviews as actionable/unactionable and add the eval metrics to the metrics array
+  metrics.push(CFCClassifier());
 
   const formattedBrainTrainingData = formatBrainTrainingData();
 
-  // Run the Gated Recurrent Unit classifier
-  NeuralNetwork("GRU", formattedBrainTrainingData);
+  // Run the Gated Recurrent Unit classifier and add the eval metrics to the metrics array
+  metrics.push(NeuralNetwork("GRU", formattedBrainTrainingData));
 
-  // Run the Long Short-Term Neural Network classifier
-  NeuralNetwork("LSTM", formattedBrainTrainingData);
+  // Run the Long Short-Term Neural Network classifier and add the eval metrics to the metrics array
+  metrics.push(NeuralNetwork("LSTM", formattedBrainTrainingData));
+
+  // Print the average metrics across classifier methods
+  printAverageMetrics(metrics, true);
 
   // Categorize the reviews
   Categorizer();

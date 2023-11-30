@@ -104,7 +104,7 @@ const NaiveBayes = () => {
   );
 
   // Step 8: Print the results to the console
-  printEvaluationMetrics(
+  return printEvaluationMetrics(
     "Naive Bayes",
     null,
     actionableLabeledCorrectly,
