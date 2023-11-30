@@ -313,6 +313,7 @@ const printEvaluationMetrics = (
  * @param {"accuracy" | "precision"| "recall" | "fScore"} metricName The metric to print
  */
 const printAverageMetric = (categoryEvalMetrics, metricName) => {
+  let availableCategoryMetrics = categoryEvalMetrics.length;
   console.log(
     `Average ${metricName === "fScore" ? "F-score" : metricName} across categories:`,
     formatNumber(
@@ -321,11 +322,12 @@ const printAverageMetric = (categoryEvalMetrics, metricName) => {
         // Get the average of those metric values
         .reduce((a, b) => {
           if (isNaN(b)) {
+            availableCategoryMetrics--;
             return a;
           } else {
             return a + b;
           }
-        }) / categoryEvalMetrics.length
+        }) / availableCategoryMetrics
     )
   );
 };
