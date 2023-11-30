@@ -249,7 +249,11 @@ const getTrainedNetwork = (networkType) => {
  * @returns The formatted number
  */
 const formatNumber = (num) => {
-  return (num * 100).toFixed(2) + "%";
+  if (isNaN(num)) {
+    return "N/A";
+  } else {
+    return (num * 100).toFixed(2) + "%";
+  }
 };
 
 /**
@@ -274,34 +278,12 @@ const printEvaluationMetrics = (
   const trueNegCount = trueNegative.length;
   const falsePosCount = falsePositive.length;
 
-  let accuracy, precision, recall, fScore;
-
-  // Prevent division by 0
-  if (truePosCount === 0) {
-    if (trueNegCount === 0 && falsePosCount === 0 && falseNegCount === 0) {
-      accuracy = 0;
-    }
-    if (falseNegCount === 0) {
-      recall = 0;
-    }
-    if (falsePosCount === 0) {
-      precision = 0;
-    }
-  }
-
-  // If the metric wasn't already calculated to be 0 (preventing NaN), calculate it now
-  if (accuracy !== 0)
-    accuracy =
-      (truePosCount + trueNegCount) /
-      (truePosCount + trueNegCount + falsePosCount + falseNegCount);
-  if (precision !== 0)
-    precision = truePosCount / (truePosCount + falsePosCount);
-  if (recall !== 0) recall = truePosCount / (truePosCount + falseNegCount);
-  if (precision + recall === 0) {
-    fScore = 0;
-  } else {
-    fScore = (2 * (precision * recall)) / (precision + recall);
-  }
+  const accuracy =
+    (truePosCount + trueNegCount) /
+    (truePosCount + trueNegCount + falsePosCount + falseNegCount);
+  const precision = truePosCount / (truePosCount + falsePosCount);
+  const recall = truePosCount / (truePosCount + falseNegCount);
+  const fScore = (2 * (precision * recall)) / (precision + recall);
 
   // Print the results to the console
   console.log(
@@ -332,11 +314,18 @@ const printEvaluationMetrics = (
  */
 const printAverageMetric = (categoryEvalMetrics, metricName) => {
   console.log(
-    `Average ${metricName} across categories:`,
+    `Average ${metricName === "fScore" ? "F-score" : metricName} across categories:`,
     formatNumber(
       categoryEvalMetrics
         .map((categoryMetric) => categoryMetric[metricName]) // Get an array of the metric value for each category
-        .reduce((a, b) => a + b) / categoryEvalMetrics.length // Get the average of those metric values
+        // Get the average of those metric values
+        .reduce((a, b) => {
+          if (isNaN(b)) {
+            return a;
+          } else {
+            return a + b;
+          }
+        }) / categoryEvalMetrics.length
     )
   );
 };
