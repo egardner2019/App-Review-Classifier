@@ -49,9 +49,9 @@ As you can see, CFC was the most accurate, Naive Bayes was the most precise, LST
 | | Average | App | GUI | Contents | Pricing | Feature/Functionality | Improvement | Updates/Versions | Resources | Security | Model | Company |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Accuracy | 81.45 | 66.5 | 77 | 65 | 81.5 | 71 | 82.5 | 87.5 | 88 | 93.5 | 89.5 | 94 |
-| Precision | 34.88 | 52.78 | 8.33 | 47.06 | 93.48 | 0 | 55.56 | 37.04 | 20 | 0 | 25 | 44.44 |
+| Precision | 38.37 | 52.78 | 8.33 | 47.06 | 93.48 | N/A | 55.56 | 37.04 | 20 | 0 | 25 | 44.44 |
 | Recall | 23.35 | 27.54 | 2.78 | 11.59 | 55.84 | 0 | 13.89 | 55.56 | 33.33 | 0 | 20 | 36.36 |
-| F-score | 25.71 | 36.19 | 4.17 | 18.6 | 69.92 | 0 | 22.22 | 44.44 | 25 | 0 |22.22 | 40 |
+| F-score | 31.42 | 36.19 | 4.17 | 18.6 | 69.92 | N/A | 22.22 | 44.44 | 25 | N/A |22.22 | 40 |
 
 The first column with data (Average) contains the average accuracy, precision, recall, and F-score across all 11 categories.
 
