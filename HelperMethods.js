@@ -274,7 +274,7 @@ const printEvaluationMetrics = (
   const trueNegCount = trueNegative.length;
   const falsePosCount = falsePositive.length;
 
-  let accuracy, precision, recall;
+  let accuracy, precision, recall, fScore;
 
   // Prevent division by 0
   if (truePosCount === 0) {
@@ -297,6 +297,11 @@ const printEvaluationMetrics = (
   if (precision !== 0)
     precision = truePosCount / (truePosCount + falsePosCount);
   if (recall !== 0) recall = truePosCount / (truePosCount + falseNegCount);
+  if (precision + recall === 0) {
+    fScore = 0;
+  } else {
+    fScore = (2 * (precision * recall)) / (precision + recall);
+  }
 
   // Print the results to the console
   console.log(
@@ -306,7 +311,8 @@ const printEvaluationMetrics = (
   );
   console.log("Accuracy:", formatNumber(accuracy));
   console.log("Precision:", formatNumber(precision));
-  console.log("Recall:", formatNumber(recall), "\n");
+  console.log("Recall:", formatNumber(recall));
+  console.log("F-Score:", formatNumber(fScore), "\n");
 
   if (cfcCategory) {
     return {
@@ -314,6 +320,7 @@ const printEvaluationMetrics = (
       accuracy: accuracy,
       precision: precision,
       recall: recall,
+      fScore: fScore,
     };
   }
 };
@@ -321,7 +328,7 @@ const printEvaluationMetrics = (
 /**
  * Print the average metric across categories
  * @param {Array} categoryEvalMetrics An array containing the evaluation metrics for each category
- * @param {"accuracy" | "precision"| "recall"} metricName The metric to print
+ * @param {"accuracy" | "precision"| "recall" | "fScore"} metricName The metric to print
  */
 const printAverageMetric = (categoryEvalMetrics, metricName) => {
   console.log(
