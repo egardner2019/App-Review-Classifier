@@ -35,12 +35,12 @@ The training data was generated with ChatGPT. The real data was manually gathere
 
 The following results are represented in percentages.
 
-| | Naive Bayes | CFC | GRU | LSTM |
-| --- | --- | --- | --- | --- |
-| Accuracy | 59.5 | 66 | 56 | 57.5 |
-| Precision | 67.27 | 61.76 | 63.04 | 54.29 |
-| Recall | 37 | 84 | 29 | 95 |
-| F-score | 47.74 | 71.19 | 39.73 | 69.09 |
+| | Average | Naive Bayes | CFC | GRU | LSTM |
+| --- | --- | --- | --- | --- | --- |
+| Accuracy | 59.75 | 59.5 | 66 | 56 | 57.5 |
+| Precision | 61.59 | 67.27 | 61.76 | 63.04 | 54.29 |
+| Recall | 61.25 | 37 | 84 | 29 | 95 |
+| F-score | 59.94 | 47.74 | 71.19 | 39.73 | 69.09 |
 
 As you can see, CFC was the most accurate, Naive Bayes was the most precise, LSTM had the highest recall, and CFC had the highest F-score.
 
