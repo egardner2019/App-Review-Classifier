@@ -2,6 +2,8 @@
 
 <h2>About the Project</h2>
 
+A formal report and slideshow presentation for this project are available within the Report.pdf and Presentation.pdf files in this repository.
+
 This is a project to classify and categorize reviews in app stores. App reviews are classified as actionable/unactionable and put into the following categories (inspired by <a href="https://doi.org/10.1145/2950290.2950299">this research paper</a>).
 
 - App (e.g. entire app, crash reports, rating, general feedback, notifications)
